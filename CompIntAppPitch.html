@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Power of Compounding Interest</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Power of Compounding Interest">
+  <meta name="author" content="Erich Wolf">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="http://slidifylibraries2.googlecode.com/git/inst/libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="http://slidifylibraries2.googlecode.com/git/inst/libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="http://slidifylibraries2.googlecode.com/git/inst/libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="http://slidifylibraries2.googlecode.com/git/inst/libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="http://slidifylibraries2.googlecode.com/git/inst/libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="http://slidifylibraries2.googlecode.com/git/inst/libraries/frameworks/io2012/js/slides" 
+    src="http://slidifylibraries2.googlecode.com/git/inst/libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Power of Compounding Interest</h1>
+    <h2>Shiny App Pitch</h2>
+    <p>Erich Wolf<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Purpose and Objective</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The Purpose of this presentation is to introduce the <a href="https://wolfervo.shinyapps.io/DataProducts/">Power of Compounding Interest</a> Shiny App developed for the Coursera Data Products Class.</p>
+
+<p>The Objective of this presentation is to provide users of my Shiny App with sufficient information to find and use the App to generate useful investment projections.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>Shiny App Overview</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The <a href="https://wolfervo.shinyapps.io/DataProducts/">Power of Compounding Interest</a> Shiny App takes an initial investment value and allows users to generate a projected value based on the investment time horizon  and interest rate, for investments subject to compounding interest.</p>
+
+<p>This is valuable when comparing long term investments with various interest rates different interest terms (e.g., compounding vs. non-compounding).</p>
+
+<p>Users input their investment amount, then select an interest rate and time horizon. The App confirms their input values, returns a single projected investment value, and provides a graph of the investment value over time.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>Calculations and Default Projection</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The App uses a version of the following r code to develop projections; the values used here are the default App values. The ui.R and server.R files are available in this <a href="https://github.com/wolfervo/DataProductsApp">Github Repository</a></p>
+
+<pre><code class="r">CompInt &lt;- function(invest, rate, years) {invest*(1+rate)^years}
+defaultinvest &lt;- 10000
+defaultrate &lt;- 0.05
+defaultyears &lt;- 15
+ProjValue &lt;- CompInt(defaultinvest, defaultrate, defaultyears)
+print(ProjValue)
+</code></pre>
+
+<pre><code>## [1] 20789.28
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Example Plot Code</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The App provides a customized version of the following plot to show investment value over time.</p>
+
+<pre><code class="r">library(ggplot2)
+time &lt;- 1:defaultyears
+value &lt;- CompInt(defaultinvest, defaultrate, time)
+pd &lt;- as.data.frame(cbind(time, value))
+tvplot &lt;- ggplot(data=pd, aes(x=time, y=value)) + 
+      geom_point(aes(size = value), col = &quot;dark blue&quot;) +
+      geom_line(col = &quot;dark blue&quot;) + 
+      xlab(&quot;Years Compounded&quot;) + ylab(&quot;Investment Value&quot;) +
+      ggtitle(&quot;Projected Value of Investment Over Time&quot;)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-5" style="background:;">
+  <hgroup>
+    <h2>Default Plot</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-1"> </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Purpose and Objective'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Shiny App Overview'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Calculations and Default Projection'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Example Plot Code'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Default Plot'>
+         5
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="http://slidifylibraries2.googlecode.com/git/inst/libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
